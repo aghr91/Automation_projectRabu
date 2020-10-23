@@ -4,6 +4,7 @@ import Reusable_Library.Abstract_Class;
 import Reusable_Library.Reusable_Method_logger;
 import Reusable_Library.Reusable_method;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -26,11 +27,11 @@ public class Abstract_Express_Search extends Abstract_Class {
     @Test
     public void Express_Search() throws IOException, BiffException, InterruptedException, WriteException {
 
-        Workbook readableFile = Workbook.getWorkbook(new File("src/main/resources/Express_Info.xls"));
+        Workbook readableFile = Workbook.getWorkbook(new File("src/main/resources/Express_Info_Results2.xls"));
         //Step 2:locate the excel sheet for this readable workbook
         Sheet readableSheet = readableFile.getSheet(0);
         // Step 3: make a copy of readable file to write back to the excel so it doesn't corrupt the original file
-        WritableWorkbook writableFile = Workbook.createWorkbook(new File("src/main/resources/Express_Info_Results.xls"), readableFile);
+        WritableWorkbook writableFile = Workbook.createWorkbook(new File("src/main/resources/Express_Info_Results2_copy.xls"), readableFile);
         //Step 4: define the sheet for writable file
         WritableSheet writableSheet = writableFile.getSheet(0);
         //Step 5: get the count of the rows that are not empty on your excel workbook
@@ -66,13 +67,15 @@ public class Abstract_Express_Search extends Abstract_Class {
             //
             if (actualTitle.contains("Men's and Women's Clothing")) {
                 System.out.println("Tittle matches ");
+
             } else {
                 System.out.println(("Tittle doesn't match. Actual tittle is " + actualTitle));
+                
             }//end verify page
             Thread.sleep(1000);
             //Enter
-            Reusable_Method_logger.mouseHover(driver, "//*[contains(@href,'/mens-clothing')]",logger, "Mens");
-            Reusable_Method_logger.click(driver, "//*[@href='/mens-clothing/shirts/cat410008']", "Shirt link");
+            Reusable_Method_logger.mouseHover(driver, "//*[contains(@href='/mens-clothing')]",logger, "Mens");
+            Reusable_Method_logger.click(driver, "//*[text()='Shirts']",logger, "Shirt link");
             Thread.sleep(1000);
             JavascriptExecutor Jse = (JavascriptExecutor) driver;
             //scroll down using executeScript command
@@ -80,35 +83,35 @@ public class Abstract_Express_Search extends Abstract_Class {
             Thread.sleep(1000);
             Reusable_Method_logger.clickByIndex(driver,"//*[@class='_1ddDj _136PD']", 2, logger,"Third Image");
             Thread.sleep(2000);
-            Reusable_Method_logger.click(driver,"//*[@value='"+Size+"']","Size");
+            Reusable_Method_logger.click(driver,"//*[@value='"+Size+"']",logger,"Size");
             Thread.sleep(1500);
-            Reusable_Method_logger.click(driver,"//*[contains(text(),'Add to Bag')]","Add to Bag");
+            Reusable_Method_logger.click(driver,"//*[contains(text(),'Add to Bag')]",logger,"Add to Bag");
             Reusable_Method_logger.mouseHover(driver,"//*[text()='View Bag']", logger, "View Bag Tab");
             Reusable_Method_logger.mouseClick(driver,"//*[text()='View Bag']", logger, "View Bag Tab");
             Thread.sleep(1500);
             Reusable_Method_logger.dropDownMenu(driver,"//*[@id='qdd-0-quantity']", Quantity,logger,"Select dropdown");
-            Reusable_Method_logger.click(driver,"//*[@id='continue-to-checkout']","Check Out");
-            Reusable_Method_logger.click(driver,"//*[text()=Checkout as Guest]","Check out As a Guest");
+            Reusable_Method_logger.click(driver,"//*[@id='continue-to-checkout']",logger,"Check Out");
+            Reusable_Method_logger.click(driver,"//*[text()=Checkout as Guest]",logger,"Check out As a Guest");
             Thread.sleep(1000);
             Reusable_Method_logger.sendkeys(driver,"//*[@id='contact-information-firstname']",FirstName,logger,"First Name");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='lastname']",Lastname,logger,"Last Name");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='email']",Email,logger,"Email");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='confirmEmail']",Email,logger,"Confirm Email");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='phone']",PhoneNumber,logger,"Phone Number");
-            Reusable_Method_logger.click(driver,"//*[@type='submit']","Click");
+            Reusable_Method_logger.click(driver,"//*[@type='submit']",logger,"Click");
             Thread.sleep(1000);
             Reusable_Method_logger.sendkeys(driver,"//*[@name='shipping.line1']",Address,logger,"Address");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='shipping.postalCode']",Zipcode,logger,"Zipcode");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='shipping.city']",City,logger,"City");
             Reusable_Method_logger.dropDownMenu(driver,"//*[@name='shipping.state']",State,logger,"State");
-            Reusable_Method_logger.click(driver,"//*[@type='submit']","Click");
-            Reusable_Method_logger.click(driver,"//*[@type='submit']","Click");
+            Reusable_Method_logger.click(driver,"//*[@type='submit']",logger,"Click");
+            Reusable_Method_logger.click(driver,"//*[@type='submit']",logger,"Click");
             Thread.sleep(1000);
             Reusable_Method_logger.sendkeys(driver,"//*[@name='creditCardNumber']",CardNumber,logger,"Card Number");
             Reusable_Method_logger.dropDownMenu(driver,"//*[@name='expMonth']",ExpireMonth,logger,"Expire Month");
             Reusable_Method_logger.dropDownMenu(driver,"//*[@name='expYear']",ExpireYear,logger,"Expire Year");
             Reusable_Method_logger.sendkeys(driver,"//*[@name='cvv']",Cvv,logger,"CVV");
-            Reusable_Method_logger.click(driver,"//*[@class='btn _9yfmt _194FD _2tFXQ _2SogC _1uOkR']","Place order");
+            Reusable_Method_logger.click(driver,"//*[@class='btn _9yfmt _194FD _2tFXQ _2SogC _1uOkR']",logger,"Place order");
             Thread.sleep(2000);
 
             String Error=Reusable_Method_logger.captureResult(driver,"//*[text()='Enter a valid credit card number.']",logger,"Error Message");
@@ -127,7 +130,7 @@ public class Abstract_Express_Search extends Abstract_Class {
         }//End of for loop
         writableFile.write();
         writableFile.close();
-        driver.quit();
+       // driver.quit();
 
 
     }//end of test

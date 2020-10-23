@@ -11,6 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,14 +38,18 @@ public class Reusable_Method_logger {
     }//end of get driver
 
     //reusable method to click on any element on any websites
-    public static void click(WebDriver driver, String locator,String elementName){
+    public static void click(WebDriver driver, String locator,ExtentTest logger,String elementName){
         //define explicit wait
         WebDriverWait wait = new WebDriverWait(driver,10);
         try{
             System.out.println("Clicking on element " + elementName);
+            logger.log(LogStatus.INFO,"Clicking on element" + elementName);
+
             wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator))).click();
         }catch (Exception err){
             System.out.println("Unable to click on element " + err);
+            logger.log(LogStatus.FAIL,"Unable to click on element " + err);
+            getScreenShot(driver,logger,elementName);
         }//end of exception
     }//end of click method
 
@@ -197,7 +204,7 @@ public class Reusable_Method_logger {
     }//end of screenshot
 
     //method to MouseHover on an element
-    public static void mouseHover(WebDriver driver,String locator,ExtentTest logger ,String elementName){
+    public static void mouseHover(WebDriver driver,String locator,ExtentTest logger ,String elementName) {
         WebDriverWait wait = new WebDriverWait(driver,10);
         Actions actions = new Actions(driver);
         try{
@@ -207,11 +214,46 @@ public class Reusable_Method_logger {
             actions.moveToElement(element).perform();
         } catch (Exception err) {
             System.out.println("Unable to mouse click element " + elementName + " " + err);
-            logger.log(LogStatus.FAIL,"Unable to mouse click element " + elementName + " " + err);
-            getScreenShot(driver,logger,elementName);
+            logger.log(LogStatus.FAIL, "Unable to mouse click element " + elementName + " " + err);
+            getScreenShot(driver, logger, elementName);
 
         }
+
     }//end of MouseHover click method
+
+
+
+    public static void uploadFile(String fileLocation) {
+        try {
+//Setting clipboard with file location
+            StringSelection stringSelection = new StringSelection(fileLocation);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+//native key strokes for CTRL, V and ENTER keys
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+    }//end of uploadFile method
+    public static void click_popup(WebDriver driver, String locator,ExtentTest logger,String elementName){
+        //define explicit wait
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        try{
+            System.out.println("Clicking on element " + elementName);
+            logger.log(LogStatus.INFO,"Clicking on pop-up " + elementName);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator))).click();
+        }catch (Exception err){
+            System.out.println("Unable to click on element " + err);
+            logger.log(LogStatus.INFO, "Pop-up doesn't exist" + elementName + " " + err);
+
+        }//end of exception
+    }//end of click methodc
+
 
 
 
